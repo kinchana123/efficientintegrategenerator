@@ -1,11 +1,14 @@
-function isPrime(n) {
-  if (n <= 1) return false;
-  if (n <= 3) return true;
-  if (n % 2 === 0 || n % 3 === 0) return false;
-  let i = 5;
-  while (i * i <= n) {
-    if (n % i === 0 || n % (i + 2) === 0) return false;
-    i += 6;
+function lengthOfLIS(nums) {
+  if (nums.length === 0) return 0;
+  const dp = new Array(nums.length).fill(1);
+  let max = 1;
+  for (let i = 1; i < nums.length; i++) {
+    for (let j = 0; j < i; j++) {
+      if (nums[i] > nums[j]) {
+        dp[i] = Math.max(dp[i], dp[j] + 1);
+        max = Math.max(max, dp[i]);
+      }
+    }
   }
-  return true;
+  return max;
 }
