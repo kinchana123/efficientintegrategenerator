@@ -1,14 +1,20 @@
-function maxEnvelopes(envelopes) {
-  envelopes.sort((a, b) => a[0] - b[0] || b[1] - a[1]);
-  const dp = new Array(envelopes.length).fill(1);
-  let max = 1;
-  for (let i = 1; i < envelopes.length; i++) {
-    for (let j = 0; j < i; j++) {
-      if (envelopes[i][1] > envelopes[j][1]) {
-        dp[i] = Math.max(dp[i], dp[j] + 1);
-        max = Math.max(max, dp[i]);
-      }
-    }
+function findItinerary(tickets) {
+  const graph = new Map();
+  for (const [from, to] of tickets) {
+    if (!graph.has(from)) graph.set(from, []);
+    graph.get(from).push(to);
   }
-  return max;
+  for (const destinations of graph.values()) {
+    destinations.sort();
+  }
+  const result = [];
+  dfs("JFK");
+  return result.reverse();
+  function dfs(from) {
+    const destinations = graph.get(from);
+    while (destinations && destinations.length) {
+      dfs(destinations.shift());
+    }
+    result.push(from);
+  }
 }
